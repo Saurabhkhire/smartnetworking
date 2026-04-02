@@ -10,19 +10,23 @@ This is **not** the legacy `https://api.rocketride.ai/v1/chat` REST shape unless
 
 ### Pipeline definition
 
-- **`pipelines/smartnetworking-ai.pipe`** — JSON graph of nodes:
-  - `chat_1` — source of user questions
-  - `prompt_1` — system-style instructions
-  - `llm_mistral_1` — Mistral provider; API key placeholder `${ROCKETRIDE_MISTRAL_KEY}`
-  - `response_1` — collects `answers` for the client
+- **`pipelines/new-pipeline.pipe`** — JSON graph of nodes used for **local RocketRide** development:
+  - `webhook_1` / `question_1` and `chat_1`: ingest text prompts
+  - `db_neo4j_1`: connects to Neo4j (credentials come from env placeholders)
+  - `llm_openai_1`: calls OpenAI (API key comes from env placeholder)
+  - `response_answers_1`: returns the final answer payload
 
-Alternate pipeline **`smartnetworking-ai-openai.pipe`** can be selected via `ROCKETRIDE_PIPELINE_FILE` if you route LLM calls through OpenAI inside RocketRide.
+Important: `new-pipeline.pipe` must **never** contain raw secrets. It should only reference env placeholders like:
+
+- `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`
+- `OPENAI_API_KEY`
 
 ### Server adapter
 
 - **`server/src/ai/adapter.js`**
-  - Reads `ROCKETRIDE_URI` / `ROCKETRIDE_BASE_URL`, `ROCKETRIDE_APIKEY` / `ROCKETRIDE_API_KEY`
-  - **Skips** RocketRide when the key looks like a **placeholder** (`rr-xxxxxxxx…`) or when `AI_SKIP_ROCKETRIDE=true`
+  - Defaults to **local RocketRide engine** (`ROCKETRIDE_URI=http://127.0.0.1:5565`) and the local pipeline `new-pipeline.pipe`
+  - **Local engine does not require** `ROCKETRIDE_APIKEY` (cloud does)
+  - `AI_SKIP_ROCKETRIDE=true` or `OPENAI_ONLY=true` forces OpenAI-direct fallback (bypasses RocketRide)
   - `RocketRideClient.connect()` → `use({ filepath })` → `chat({ token, question })`
   - Builds a `Question` with **System** instruction + user text (same content as chatbot prompts)
   - Parses `response.answers[0]` (string or `{ text }`)
@@ -38,10 +42,9 @@ Alternate pipeline **`smartnetworking-ai-openai.pipe`** can be selected via `ROC
 
 | Variable | Role |
 |----------|------|
-| `ROCKETRIDE_URI` | DAP host base URL |
-| `ROCKETRIDE_APIKEY` | Bearer / API key for the SDK |
-| `ROCKETRIDE_PIPELINE_FILE` | Which `.pipe` file under `/pipelines` to load |
-| `ROCKETRIDE_MISTRAL_KEY` | Substituted into pipeline JSON for Mistral node |
+| `ROCKETRIDE_URI` | RocketRide engine base URL (local default: `http://127.0.0.1:5565`) |
+| `ROCKETRIDE_APIKEY` | Only needed for RocketRide cloud (not local engine) |
+| `ROCKETRIDE_PIPELINE_FILE` | Which `.pipe` file under `/pipelines` to load (default: `new-pipeline.pipe`) |
 | `AI_SKIP_ROCKETRIDE` | `true` = only OpenAI path |
 | `OPENAI_API_KEY` | Direct OpenAI fallback for chat completions |
 | `OPENAI_TIMEOUT_MS` | **OpenAI** HTTP timeout in ms (default **120000**). The old 8s `ROCKETRIDE_TIMEOUT_MS` was applied to OpenAI and caused *aborted due to timeout* on large personalization prompts. |
@@ -60,11 +63,12 @@ The adapter now treats placeholder RocketRide keys as **absent**, prefers **Open
 
 ## Recommended local setup
 
-1. Set a **real** `OPENAI_API_KEY` for reliable chatbot behavior.
-2. Either set **`AI_SKIP_ROCKETRIDE=true`** to skip DAP, **or** configure a valid RocketRide cloud/local key and working pipeline keys (`ROCKETRIDE_MISTRAL_KEY` etc. per your pipeline file).
-3. Keep `AI_FALLBACK_MODE=false` unless you explicitly want stub replies.
+1. Start the RocketRide engine locally and set `ROCKETRIDE_URI=http://127.0.0.1:5565`.
+2. Set `ROCKETRIDE_PIPELINE_FILE=new-pipeline.pipe`.
+3. Set `OPENAI_API_KEY` and `NEO4J_URI` / `NEO4J_USER` / `NEO4J_PASSWORD` so the pipeline can call OpenAI + Neo4j.
+4. Keep `AI_FALLBACK_MODE=false` unless you explicitly want stub replies.
 
 ## Further reading
 
 - RocketRide product docs: [https://docs.rocketride.org](https://docs.rocketride.org)
-- Pipeline file in repo: `pipelines/smartnetworking-ai.pipe`
+- Pipeline file in repo: `pipelines/new-pipeline.pipe`

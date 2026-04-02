@@ -1,0 +1,183 @@
+{
+  "components": [
+    {
+      "id": "db_neo4j_1",
+      "provider": "db_neo4j",
+      "config": {
+        "profile": "default",
+        "default": {
+          "auth_method": "userpass",
+          "database": "neo4j",
+          "db_description": "Instance1",
+          "max_attempts": 5,
+          "uri": "${NEO4J_URI}",
+          "user": "${NEO4J_USER}",
+          "password": "${NEO4J_PASSWORD}"
+        },
+        "parameters": {
+          "google": {}
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 614.3753146208168,
+          "y": 323.6298306415658
+        },
+        "measured": {
+          "width": 150,
+          "height": 121
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "questions",
+          "from": "chat_1"
+        },
+        {
+          "lane": "questions",
+          "from": "question_1"
+        }
+      ]
+    },
+    {
+      "id": "chat_1",
+      "provider": "chat",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "chat"
+      },
+      "ui": {
+        "position": {
+          "x": 358.78084587135146,
+          "y": 408.09986970116944
+        },
+        "measured": {
+          "width": 150,
+          "height": 89
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "llm_openai_1",
+      "provider": "llm_openai",
+      "name": "Node",
+      "config": {
+        "profile": "openai-4o",
+        "openai-5-2": {
+          "apikey": "${OPENAI_API_KEY}"
+        },
+        "parameters": {
+          "google": {}
+        },
+        "openai-4o": {
+          "apikey": "${OPENAI_API_KEY}"
+        }
+      },
+      "ui": {
+        "position": {
+          "x": 606.2693224327376,
+          "y": 532.0630064211894
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "control": [
+        {
+          "classType": "llm",
+          "from": "db_neo4j_1"
+        }
+      ]
+    },
+    {
+      "id": "response_answers_1",
+      "provider": "response_answers",
+      "config": {
+        "laneName": "answers"
+      },
+      "ui": {
+        "position": {
+          "x": 796.4648017634522,
+          "y": 301.6616453297118
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "answers",
+          "from": "db_neo4j_1"
+        }
+      ]
+    },
+    {
+      "id": "webhook_1",
+      "provider": "webhook",
+      "config": {
+        "hideForm": true,
+        "mode": "Source",
+        "parameters": {},
+        "type": "webhook"
+      },
+      "ui": {
+        "position": {
+          "x": 367.98696881954646,
+          "y": 141.96741330025674
+        },
+        "measured": {
+          "width": 150,
+          "height": 196
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      }
+    },
+    {
+      "id": "question_1",
+      "provider": "question",
+      "config": {
+        "type": "question"
+      },
+      "ui": {
+        "position": {
+          "x": 536.6097981367745,
+          "y": 157.047946883502
+        },
+        "measured": {
+          "width": 150,
+          "height": 66
+        },
+        "nodeType": "default",
+        "formDataValid": true
+      },
+      "input": [
+        {
+          "lane": "text",
+          "from": "webhook_1"
+        }
+      ]
+    }
+  ],
+  "project_id": "b6b3f603-7ace-49e7-865c-8387235e77c2",
+  "viewport": {
+    "x": -387.3280290175967,
+    "y": -108.93865745198798,
+    "zoom": 1.1646780339457385
+  },
+  "version": 1,
+  "docRevision": 43,
+  "source": "chat_1"
+}

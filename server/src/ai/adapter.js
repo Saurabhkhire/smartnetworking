@@ -12,12 +12,23 @@ let rrDisabled = false;
 let rrInitPromise = null;
 
 function normalizeRocketRideUri(uri) {
-  if (!uri || !String(uri).trim()) return 'https://cloud.rocketride.ai';
+  // Default to local engine (no cloud config needed).
+  if (!uri || !String(uri).trim()) return 'http://127.0.0.1:5565';
   let u = String(uri).trim().replace(/\/v1\/?$/i, '');
   if (/api\.rocketride\.ai/i.test(u)) {
     u = u.replace(/api\.rocketride\.ai/i, 'cloud.rocketride.ai');
   }
   return u;
+}
+
+function isLocalRocketRideUri(uri) {
+  const u = String(uri || '').trim().toLowerCase();
+  return (
+    u.startsWith('http://127.0.0.1') ||
+    u.startsWith('http://localhost') ||
+    u.startsWith('ws://127.0.0.1') ||
+    u.startsWith('ws://localhost')
+  );
 }
 
 function rocketRideClientConfig() {
@@ -39,7 +50,8 @@ function isUnusableRocketRideAuth(auth) {
 }
 
 function pipelineFilePath() {
-  const name = process.env.ROCKETRIDE_PIPELINE_FILE || 'smartnetworking-ai.pipe';
+  // Default to the local pipeline file that can call OpenAI/Neo4j via env vars.
+  const name = process.env.ROCKETRIDE_PIPELINE_FILE || 'new-pipeline.pipe';
   return path.join(__dirname, '..', '..', '..', 'pipelines', name);
 }
 
@@ -50,13 +62,11 @@ async function ensureRocketRideSession() {
 
   rrInitPromise = (async () => {
     const { uri, auth } = rocketRideClientConfig();
-    if (!auth || isUnusableRocketRideAuth(auth)) {
-      rrDisabled = true;
-      console.warn('[ai] RocketRide key missing or placeholder — skipping DAP; using OpenAI fallback if configured.');
-      return null;
-    }
     try {
-      const client = new RocketRideClient({ uri, auth });
+      // Local engine typically doesn't require auth; cloud does.
+      const client = isLocalRocketRideUri(uri)
+        ? new RocketRideClient({ uri })
+        : new RocketRideClient({ uri, auth });
       await client.connect();
       const filepath = pipelineFilePath();
       const { token } = await client.use({ filepath });
@@ -135,7 +145,7 @@ async function callOpenAIDirect(systemPrompt, userPrompt, maxTokens) {
 
 function lastResortAiMessage(err) {
   const hint =
-    'Configure OPENAI_API_KEY for Chat Completions fallback, set a real ROCKETRIDE_APIKEY for DAP pipelines, or set AI_FALLBACK_MODE=true for stub replies.';
+    'Start the local RocketRide engine and ensure ROCKETRIDE_PIPELINE_FILE points to a valid .pipe. If you want OpenAI-only without RocketRide, set AI_SKIP_ROCKETRIDE=true and OPENAI_API_KEY.';
   return (
     `The AI assistant could not reach a language model (${err?.message || 'unknown error'}). ` +
     `${hint}`
@@ -149,8 +159,7 @@ async function callAI(systemPrompt, userPrompt, maxTokens = 300) {
 
   const skipRocketRide =
     process.env.AI_SKIP_ROCKETRIDE === 'true' ||
-    process.env.OPENAI_ONLY === 'true' ||
-    isUnusableRocketRideAuth(rocketRideClientConfig().auth);
+    process.env.OPENAI_ONLY === 'true';
 
   if (!skipRocketRide) {
     try {
@@ -171,12 +180,17 @@ async function callAI(systemPrompt, userPrompt, maxTokens = 300) {
     }
   }
 
-  try {
-    return await callOpenAIDirect(systemPrompt, userPrompt, maxTokens);
-  } catch (err) {
-    console.warn('[ai] OpenAI fallback failed:', err.message);
-    return lastResortAiMessage(err);
+  // If RocketRide is enabled but unavailable, we can still optionally fall back to OpenAI direct.
+  if (process.env.AI_SKIP_ROCKETRIDE === 'true' || process.env.OPENAI_ONLY === 'true') {
+    try {
+      return await callOpenAIDirect(systemPrompt, userPrompt, maxTokens);
+    } catch (err) {
+      console.warn('[ai] OpenAI fallback failed:', err.message);
+      return lastResortAiMessage(err);
+    }
   }
+
+  return lastResortAiMessage(new Error('RocketRide local engine unavailable'));
 }
 
 async function callAICached(cacheKey, systemPrompt, userPrompt, maxTokens = 300) {
