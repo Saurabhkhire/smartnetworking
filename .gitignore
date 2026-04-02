@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment variables — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Build output
+dist/
+build/
+
+# Generated docs
+docs/generated/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# RocketRide
+.rocketride/
+
+# SQLite databases
+*.db
+*.sqlite
+*.db-shm
+*.db-wal
+
+# Misc
+Untitled
+npm

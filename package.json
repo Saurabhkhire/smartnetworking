@@ -1,0 +1,24 @@
+{
+  "name": "venturegraph",
+  "version": "1.0.0",
+  "description": "Graph-powered event networking platform — HackWithBay 2.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names \"server,client\" --prefix-colors \"cyan,magenta\" \"cross-env DB_DRIVER=sqlite npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:neo4j": "concurrently --kill-others-on-fail --names \"server,client\" --prefix-colors \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "build": "npm run build --prefix client",
+    "stop:dev": "npx --yes kill-port 4000 5173",
+    "db:clear": "npm run db:clear --prefix server",
+    "db:mock": "npm run db:mock --prefix server",
+    "db:mock:sqlite": "npm run db:mock:sqlite --prefix server",
+    "db:clear:sqlite": "npm run db:clear:sqlite --prefix server",
+    "docs:word": "npm run docs:word --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0"
+  }
+}
