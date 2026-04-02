@@ -65,6 +65,9 @@ export default function EventJoin() {
     setChatLoading(false);
   }
 
+  // Attendees list (for display)
+  const [attendees, setAttendees] = useState([]);
+
   // Form fields
   const [whoYouAre, setWhoYouAre] = useState('');
   const [whoYouSeek, setWhoYouSeek] = useState('');

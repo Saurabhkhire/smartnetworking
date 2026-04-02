@@ -323,35 +323,35 @@ export default function EventsCalendar() {
         {/* AI Sidebar */}
         <div>
           <div style={{
-            position: ‘sticky’, top: 80,
-            background: ‘var(--bg-card)’, border: ‘1px solid var(--border)’,
-            borderRadius: 20, overflow: ‘hidden’,
-            boxShadow: ‘0 8px 40px rgba(124,111,255,0.12)’,
+            position: 'sticky', top: 80,
+            background: 'var(--bg-card)', border: '1px solid var(--border)',
+            borderRadius: 20, overflow: 'hidden',
+            boxShadow: '0 8px 40px rgba(124,111,255,0.12)',
           }}>
             {/* Header bar */}
             <div style={{
-              padding: ‘16px 20px’, display: ‘flex’, alignItems: ‘center’, gap: 12,
-              background: ‘linear-gradient(135deg, rgba(124,111,255,0.15) 0%, rgba(59,130,246,0.08) 100%)’,
-              borderBottom: ‘1px solid var(--border)’,
+              padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12,
+              background: 'linear-gradient(135deg, rgba(124,111,255,0.15) 0%, rgba(59,130,246,0.08) 100%)',
+              borderBottom: '1px solid var(--border)',
             }}>
               <div style={{
                 width: 42, height: 42, borderRadius: 12, flexShrink: 0,
-                background: ‘linear-gradient(145deg, var(--accent), var(--info))’,
-                display: ‘flex’, alignItems: ‘center’, justifyContent: ‘center’,
-                fontWeight: 900, color: ‘#fff’, fontSize: 13,
-                boxShadow: ‘0 4px 16px rgba(124,111,255,0.35)’,
+                background: 'linear-gradient(145deg, var(--accent), var(--info))',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontWeight: 900, color: '#fff', fontSize: 13,
+                boxShadow: '0 4px 16px rgba(124,111,255,0.35)',
               }}>AI</div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: ‘-0.02em’ }}>VentureGraph AI</div>
-                <div style={{ fontSize: 11.5, color: ‘var(--text-muted)’, marginTop: 1 }}>
+                <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.02em' }}>VentureGraph AI</div>
+                <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 1 }}>
                   Deep event discovery · date &amp; time aware
                 </div>
               </div>
               {aiChat.length > 0 && (
                 <button
                   type="button"
-                  onClick={() => { setAiChat([]); setAiQuestion(‘’); }}
-                  style={{ background: ‘none’, border: ‘1px solid var(--border)’, borderRadius: 8, padding: ‘4px 10px’, fontSize: 11, color: ‘var(--text-muted)’, cursor: ‘pointer’ }}
+                  onClick={() => { setAiChat([]); setAiQuestion(''); }}
+                  style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '4px 10px', fontSize: 11, color: 'var(--text-muted)', cursor: 'pointer' }}
                   title="Clear conversation"
                 >Clear</button>
               )}
@@ -359,35 +359,35 @@ export default function EventsCalendar() {
 
             {/* Suggested chips — hidden once chat starts */}
             {aiChat.length === 0 && (
-              <div style={{ padding: ‘14px 16px’, borderBottom: ‘1px solid var(--border)’ }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: ‘var(--text-muted)’, textTransform: ‘uppercase’, letterSpacing: ‘0.07em’, marginBottom: 10 }}>
+              <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
                   Try asking
                 </div>
-                <div style={{ display: ‘flex’, flexWrap: ‘wrap’, gap: 6 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {[
-                    ‘Top events I should attend’,
-                    ‘Best event April 1–5’,
-                    ‘Events on April 3 after 6pm’,
-                    ‘Events after hours this week’,
-                    ‘Events with most founders’,
-                    ‘Events matching my skills’,
-                    ‘AI & ML events’,
-                    ‘Best hackathon for engineers’,
-                    ‘Overlapping events — help choose’,
-                    ‘Events from [company name]’,
+                    'Top events I should attend',
+                    'Best event April 1–5',
+                    'Events on April 3 after 6pm',
+                    'Events after hours this week',
+                    'Events with most founders',
+                    'Events matching my skills',
+                    'AI & ML events',
+                    'Best hackathon for engineers',
+                    'Overlapping events — help choose',
+                    'Events from [company name]',
                   ].map(q => (
                     <button
                       key={q}
                       type="button"
                       onClick={() => setAiQuestion(q)}
                       style={{
-                        padding: ‘5px 11px’, borderRadius: 20, fontSize: 11.5, fontWeight: 500,
-                        cursor: ‘pointer’, background: ‘var(--bg-secondary)’,
-                        border: ‘1px solid var(--border)’, color: ‘var(--text-secondary)’,
-                        transition: ‘all 0.12s’, whiteSpace: ‘nowrap’,
+                        padding: '5px 11px', borderRadius: 20, fontSize: 11.5, fontWeight: 500,
+                        cursor: 'pointer', background: 'var(--bg-secondary)',
+                        border: '1px solid var(--border)', color: 'var(--text-secondary)',
+                        transition: 'all 0.12s', whiteSpace: 'nowrap',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = ‘var(--accent)’; e.currentTarget.style.color = ‘var(--accent)’; e.currentTarget.style.background = ‘var(--accent-soft)’; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = ‘var(--border)’; e.currentTarget.style.color = ‘var(--text-secondary)’; e.currentTarget.style.background = ‘var(--bg-secondary)’; }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.background = 'var(--accent-soft)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.background = 'var(--bg-secondary)'; }}
                     >{q}</button>
                   ))}
                 </div>
@@ -396,35 +396,35 @@ export default function EventsCalendar() {
 
             {/* Chat thread */}
             {aiChat.length > 0 && (
-              <div style={{ maxHeight: 380, overflowY: ‘auto’, padding: ‘14px 16px’, display: ‘flex’, flexDirection: ‘column’, gap: 10 }}>
+              <div style={{ maxHeight: 380, overflowY: 'auto', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {aiChat.map((msg, i) => (
-                  <div key={i} style={{ display: ‘flex’, gap: 8, alignItems: ‘flex-start’, justifyContent: msg.role === ‘user’ ? ‘flex-end’ : ‘flex-start’ }}>
-                    {msg.role === ‘assistant’ && (
+                  <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                    {msg.role === 'assistant' && (
                       <div style={{
                         width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-                        background: ‘linear-gradient(145deg, var(--accent), var(--info))’,
-                        display: ‘flex’, alignItems: ‘center’, justifyContent: ‘center’,
-                        fontSize: 9, fontWeight: 900, color: ‘#fff’, marginTop: 2,
+                        background: 'linear-gradient(145deg, var(--accent), var(--info))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 9, fontWeight: 900, color: '#fff', marginTop: 2,
                       }}>AI</div>
                     )}
                     <div style={{
-                      maxWidth: ‘87%’, padding: ‘10px 14px’,
-                      borderRadius: msg.role === ‘user’ ? ‘16px 4px 16px 16px’ : ‘4px 16px 16px 16px’,
-                      background: msg.role === ‘user’
-                        ? ‘linear-gradient(135deg, var(--accent), #6a5cf0)’
-                        : ‘var(--bg-secondary)’,
-                      color: msg.role === ‘user’ ? ‘#fff’ : ‘var(--text-primary)’,
-                      border: msg.role === ‘assistant’ ? ‘1px solid var(--border)’ : ‘none’,
-                      boxShadow: msg.role === ‘assistant’ ? ‘var(--shadow-sm)’ : ‘none’,
+                      maxWidth: '87%', padding: '10px 14px',
+                      borderRadius: msg.role === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
+                      background: msg.role === 'user'
+                        ? 'linear-gradient(135deg, var(--accent), #6a5cf0)'
+                        : 'var(--bg-secondary)',
+                      color: msg.role === 'user' ? '#fff' : 'var(--text-primary)',
+                      border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
+                      boxShadow: msg.role === 'assistant' ? 'var(--shadow-sm)' : 'none',
                     }}>
-                      <ChatMessageBody content={msg.content} isUser={msg.role === ‘user’} />
+                      <ChatMessageBody content={msg.content} isUser={msg.role === 'user'} />
                     </div>
                   </div>
                 ))}
                 {aiLoading && (
-                  <div style={{ display: ‘flex’, gap: 8, alignItems: ‘flex-start’ }}>
-                    <div style={{ width: 28, height: 28, borderRadius: 8, background: ‘linear-gradient(145deg, var(--accent), var(--info))’, display: ‘flex’, alignItems: ‘center’, justifyContent: ‘center’, fontSize: 9, fontWeight: 900, color: ‘#fff’, flexShrink: 0 }}>AI</div>
-                    <div style={{ padding: ‘12px 16px’, background: ‘var(--bg-secondary)’, borderRadius: ‘4px 16px 16px 16px’, border: ‘1px solid var(--border)’ }}>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(145deg, var(--accent), var(--info))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 900, color: '#fff', flexShrink: 0 }}>AI</div>
+                    <div style={{ padding: '12px 16px', background: 'var(--bg-secondary)', borderRadius: '4px 16px 16px 16px', border: '1px solid var(--border)' }}>
                       <ChatTypingIndicator label="Scanning events" />
                     </div>
                   </div>
@@ -433,14 +433,14 @@ export default function EventsCalendar() {
             )}
 
             {/* Input */}
-            <div style={{ padding: ‘12px 14px’, borderTop: aiChat.length > 0 ? ‘1px solid var(--border)’ : ‘none’ }}>
-              <form onSubmit={handleAskAI} style={{ display: ‘flex’, gap: 8, alignItems: ‘flex-end’ }}>
+            <div style={{ padding: '12px 14px', borderTop: aiChat.length > 0 ? '1px solid var(--border)' : 'none' }}>
+              <form onSubmit={handleAskAI} style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
                 <textarea
                   className="form-input"
-                  style={{ fontSize: 13, borderRadius: 12, flex: 1, minHeight: 44, maxHeight: 100, resize: ‘none’, lineHeight: 1.5, padding: ‘10px 14px’ }}
+                  style={{ fontSize: 13, borderRadius: 12, flex: 1, minHeight: 44, maxHeight: 100, resize: 'none', lineHeight: 1.5, padding: '10px 14px' }}
                   value={aiQuestion}
                   onChange={e => setAiQuestion(e.target.value)}
-                  onKeyDown={e => { if (e.key === ‘Enter’ && !e.shiftKey) { e.preventDefault(); handleAskAI(e); } }}
+                  onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAskAI(e); } }}
                   placeholder="Ask anything — dates, times, roles, companies…"
                   disabled={aiLoading}
                   rows={1}
@@ -449,16 +449,16 @@ export default function EventsCalendar() {
                   type="submit"
                   disabled={aiLoading || !aiQuestion.trim()}
                   style={{
-                    width: 44, height: 44, borderRadius: 12, border: ‘none’, cursor: ‘pointer’,
-                    background: aiQuestion.trim() ? ‘linear-gradient(135deg, var(--accent), #6a5cf0)’ : ‘var(--bg-card-hover)’,
-                    color: aiQuestion.trim() ? ‘#fff’ : ‘var(--text-muted)’,
-                    fontSize: 18, display: ‘flex’, alignItems: ‘center’, justifyContent: ‘center’,
-                    flexShrink: 0, transition: ‘all 0.15s’,
-                    boxShadow: aiQuestion.trim() ? ‘0 2px 12px rgba(124,111,255,0.3)’ : ‘none’,
+                    width: 44, height: 44, borderRadius: 12, border: 'none', cursor: 'pointer',
+                    background: aiQuestion.trim() ? 'linear-gradient(135deg, var(--accent), #6a5cf0)' : 'var(--bg-card-hover)',
+                    color: aiQuestion.trim() ? '#fff' : 'var(--text-muted)',
+                    fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, transition: 'all 0.15s',
+                    boxShadow: aiQuestion.trim() ? '0 2px 12px rgba(124,111,255,0.3)' : 'none',
                   }}
                 >↑</button>
               </form>
-              <div style={{ fontSize: 10.5, color: ‘var(--text-muted)’, marginTop: 6, textAlign: ‘center’ }}>
+              <div style={{ fontSize: 10.5, color: 'var(--text-muted)', marginTop: 6, textAlign: 'center' }}>
                 Enter to send · Shift+Enter for new line
               </div>
             </div>
@@ -480,7 +480,7 @@ export default function EventsCalendar() {
               </button>
             </div>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20 }}>
-              Pull events from Luma for a specific time period and location. Requires LUMA_API_KEY configured on the server.
+              Pull events from Luma for a specific time period and location. Requires APIFY_TOKEN configured on the server.
             </p>
             <div className="stack-sm" style={{ marginBottom: 20 }}>
               <div>
